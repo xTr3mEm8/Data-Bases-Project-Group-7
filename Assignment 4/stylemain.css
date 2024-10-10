@@ -1,0 +1,152 @@
+:root {
+    --primary-color: #001F3F;
+     --secondary-color: #6A9AB0;
+     --background-color: #EAD8B1;
+     --text-color: #333333;
+ }
+
+ body {
+     font-family: Arial, sans-serif;
+     margin: 0;
+     padding: 0;
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     background-color: var(--background-color);
+     color: var(--text-color);
+ }
+
+ .header {
+     text-align: center;
+     margin-top: 20px;
+ }
+
+ .header img {
+     width: 100px;
+     height: 100px;
+ }
+
+ .header h1 {
+     margin: 10px 0;
+     color: var(--primary-color);
+ }
+
+ .navbar {
+     display: flex;
+     justify-content: space-around;
+     width: 100%;
+     background-color: var(--primary-color);
+     padding: 10px 0;
+     border-top: 2px solid #ccc;
+     border-bottom: 2px solid #ccc;
+ }
+
+ .navbar a {
+     text-decoration: none;
+     color: white;
+     padding: 10px 20px;
+     font-size: 18px;
+ }
+
+ .navbar a:hover {
+     background-color: var(--secondary-color);
+ }
+
+ .recent-tasks {
+     margin-top: 20px;
+     text-align: center;
+ }
+
+ .recent-tasks h2 {
+     color: var(--primary-color);
+ }
+
+ .task-list {
+     display: flex;
+     justify-content: center;
+     margin-top: 20px;
+     flex-wrap: wrap;
+ }
+
+ .task-card {
+     width: 150px;
+     height: 200px;
+     border: 1px solid #ccc;
+     border-radius: 10px;
+     margin: 10px;
+     padding: 10px;
+     display: flex;
+     flex-direction: column;
+     justify-content: space-between;
+     background-color: white;
+     box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+     position: relative;
+ }
+
+ .task-card h3 {
+     margin: 0;
+     font-size: 18px;
+     text-align: center;
+     color: var(--primary-color);
+ }
+
+ .task-card .task-details {
+     font-size: 14px;
+ }
+
+ .task-card .actions {
+     display: flex;
+     justify-content: space-between;
+ }
+
+ .task-card button {
+     padding: 5px;
+     background-color: var(--secondary-color);
+     border: none;
+     border-radius: 5px;
+     cursor: pointer;
+     color: white;
+ }
+
+ .task-card button:hover {
+     background-color: var(--primary-color);
+ }
+
+ .task-card .remove-btn {
+     position: absolute;
+     top: 5px;
+     right: 5px;
+     background-color: red;
+     border: none;
+     color: white;
+     border-radius: 50%;
+     padding: 5px;
+     cursor: pointer;
+ }
+
+ .task-card .remove-btn:hover {
+     background-color: darkred;
+ }
+
+ .bttn 
+ {
+    padding: 10px 20px; 
+    background-color: var(--secondary-color); 
+    border: none; 
+    border-radius: 5px; 
+    cursor: pointer; 
+    color: white; 
+    font-size: 16px; 
+    transition: background-color 0.3s ease; 
+ }
+
+ .bttn:hover {
+    background-color: var(--primary-color); 
+}
+
+footer {
+    position: fixed; 
+    bottom: 20px;
+    right: 20px;    
+    z-index: 1000;  
+}

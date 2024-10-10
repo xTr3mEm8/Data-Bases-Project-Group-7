@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taskly Management</title>  
+    <link rel="stylesheet" href="stylemain.css">
+</head>
+<body>
+
+    <div class="header">
+        <img src="logotaskly.png" alt="Logo" style="width: 150px; height: auto;">
+        <h1>Taskly Management</h1>
+    </div>
+
+    <div class="navbar">
+        <a href="task_form.html">Add Task</a>
+        <a href="reminders.html">Reminders</a>
+        <a href="settings.html">Settings</a>
+        <a href="helppage.html">Help</a>
+    </div>
+
+    <div class="recent-tasks">
+        <h2 id="no-task-message">No tasks available. Click 'Add Task' to create a new task!</h2>
+    </div>
+
+    <div class="task-list" id="task-list"></div>
+
+    <footer>
+        <button class="bttn logout-button" onclick="logout()">Logout</button>
+    </footer>
+
+    <script>
+
+        function logout() {
+            window.location.href = 'index.html';
+        }
+
+        function removeTask(taskElement, taskName) {
+            taskElement.parentElement.remove();
+            let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+            tasks = tasks.filter(task => task.taskName !== taskName);
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+
+            removeReminderFromStorage(taskName);
+
+            if (tasks.length === 0) {
+                document.getElementById('no-task-message').style.display = 'block';
+            }
+        }
+
+        function removeReminderFromStorage(taskName) {
+            let reminders = JSON.parse(localStorage.getItem('reminders')) || [];
+            reminders = reminders.filter(reminder => reminder.taskName !== taskName);
+            localStorage.setItem('reminders', JSON.stringify(reminders));
+        }
+
+        function getURLParams() {
+            const params = new URLSearchParams(window.location.search);
+            const taskName = params.get('taskName');
+            const taskType = params.get('taskType');
+            const dueDate = params.get('dueDate');
+            const contactMethod = params.get('contactMethod'); 
+            return { taskName, taskType, dueDate, contactMethod };
+        }
+
+        function addTaskToPage(taskName, taskType, dueDate, contactMethod, store = true) {
+            const taskList = document.getElementById('task-list');
+            const taskCard = document.createElement('div');
+            taskCard.classList.add('task-card');
+
+            taskCard.innerHTML = `
+                <button class="remove-btn" onclick="removeTask(this, '${taskName}')">X</button>
+                <h3>${taskName}</h3>
+                <div class="task-details">
+                    <p>Progress: In Progress</p>
+                    <p>Type: ${taskType}</p>
+                    <p>Due Date: ${dueDate}</p>
+                </div>
+                <div class="actions">
+                    <button onclick="editTask('${taskName}', '${taskType}', '${dueDate}', '${contactMethod}')">Edit</button>
+                    <button onclick="finishTask('${taskName}', this)">Finish</button>
+                </div>
+            `;
+
+            taskList.appendChild(taskCard);
+            document.getElementById('no-task-message').style.display = 'none';
+
+           
+            if (store) {
+                storeTask({ taskName, taskType, dueDate, contactMethod });
+                storeReminder(taskName, dueDate, contactMethod);
+            }
+        }
+
+        function editTask(taskName, taskType, dueDate, contactMethod) {L
+            window.location.href = `edit_task.html?taskName=${encodeURIComponent(taskName)}&taskType=${encodeURIComponent(taskType)}&dueDate=${encodeURIComponent(dueDate)}&contactMethod=${encodeURIComponent(contactMethod)}`;
+        }
+
+        function storeTask(task) {
+            let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+            if (!tasks.some(t => t.taskName === task.taskName)) {
+                tasks.push(task);
+                localStorage.setItem('tasks', JSON.stringify(tasks));
+            }
+        }
+
+        function storeReminder(taskName, dueDate, contactMethod) {
+            let reminders = JSON.parse(localStorage.getItem('reminders')) || [];
+            if (!reminders.some(rem => rem.taskName === taskName)) {
+                reminders.push({ taskName, dueDate, contactMethod });
+                localStorage.setItem('reminders', JSON.stringify(reminders));
+            }
+        }
+
+        function loadTasks() {
+            const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+            if (tasks.length === 0) {
+                document.getElementById('no-task-message').style.display = 'block';
+            } else {
+                tasks.forEach(task => {
+                    addTaskToPage(task.taskName, task.taskType, task.dueDate, task.contactMethod, false); // Don't store again
+                });
+            }
+        }
+
+        function finishTask(taskName, taskElement) {
+           
+            const confirmed = confirm("Are you sure you want to mark this task as Finished?");
+            if (confirmed) {
+                removeTask(taskElement, taskName);
+                location.reload();
+            }
+        }
+
+        const { taskName, taskType, dueDate, contactMethod } = getURLParams();
+        if (taskName && taskType && dueDate && contactMethod) {
+            addTaskToPage(taskName, taskType, dueDate, contactMethod);
+        } else {
+            loadTasks(); 
+        }
+
+    </script>
+
+</body>
+</html>

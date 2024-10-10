@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Task</title>
+    <link rel="stylesheet" href="stylemain.css">
+</head>
+<body>
+
+    <div class="header">
+        <h1>Edit Task</h1>
+    </div>
+
+    <div class="task-form">
+        <form onsubmit="applyChanges(event)">
+            <label for="task-name">Task Name</label>
+            <input type="text" id="task-name" required>
+
+            <label for="due-date">Due Date</label>
+            <input type="date" id="due-date" required>
+
+            <label for="task-type">Task Type</label>
+            <select id="task-type" required>
+                <option value="Work">Work</option>
+                <option value="Personal">Personal</option>
+                <option value="Other">Other</option>
+            </select>
+
+            <label for="contact-method">Contact Method (Email or Phone)</label>
+            <input type="text" id="contact-method" required>
+
+            <input type="hidden" id="original-task-name">
+
+            <button type="submit">Apply Changes</button>
+        </form>
+    </div>
+
+    <script>
+       
+        function getURLParams() {
+            const params = new URLSearchParams(window.location.search);
+            const taskName = params.get('taskName');
+            const taskType = params.get('taskType');
+            const dueDate = params.get('dueDate');
+            const contactMethod = params.get('contactMethod');
+            return { taskName, taskType, dueDate, contactMethod };
+        }
+
+        function loadTaskDetails() {
+            const { taskName, taskType, dueDate, contactMethod } = getURLParams();
+            document.getElementById('task-name').value = taskName;
+            document.getElementById('due-date').value = dueDate;
+            document.getElementById('task-type').value = taskType;
+            document.getElementById('contact-method').value = contactMethod;
+            document.getElementById('original-task-name').value = taskName; 
+        }
+
+        function applyChanges(event) {
+            event.preventDefault();
+
+            const originalTaskName = document.getElementById('original-task-name').value;
+            const taskName = document.getElementById('task-name').value;
+            const dueDate = document.getElementById('due-date').value;
+            const taskType = document.getElementById('task-type').value;
+            const contactMethod = document.getElementById('contact-method').value;
+
+            
+            let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+            tasks = tasks.map(task => {
+                if (task.taskName === originalTaskName) {
+                    return { taskName, taskType, dueDate, contactMethod };
+                }
+                return task;
+            });
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+
+            
+            let reminders = JSON.parse(localStorage.getItem('reminders')) || [];
+            reminders = reminders.map(reminder => {
+                if (reminder.taskName === originalTaskName) {
+                    return { taskName, dueDate, contactMethod };
+                }
+                return reminder;
+            });
+            localStorage.setItem('reminders', JSON.stringify(reminders));
+
+            
+            window.location.href = 'main.html';
+        }
+
+        window.onload = loadTaskDetails;
+    </script>
+
+</body>
+</html>

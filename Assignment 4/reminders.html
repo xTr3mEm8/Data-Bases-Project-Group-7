@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reminders - Taskly Management</title>
+    <link rel="stylesheet" href="stylemain.css"> 
+</head>
+<body>
+
+    <div class="header">
+        <img src="logotaskly.png" alt="Logo" style="width: 150px; height: auto;">
+        <h1>Taskly Management - Reminders</h1>
+    </div>
+
+    <div class="navbar">
+        <a href="main.html">Tasks</a>
+        <a href="#">Reminders</a>
+        <a href="settings.html">Settings</a>
+        <a href="helppage.html">Help</a>
+    </div>
+
+    <div class="reminder-list" id="reminder-list">
+        <h2>No reminders available</h2>
+    </div>
+
+    <footer>
+        <button class="bttn logout-button" onclick="logout()">Logout</button>
+    </footer>
+
+    <script>
+        function logout() {
+            window.location.href = 'login.html';
+        }
+
+        function removeReminder(reminderElement, taskName) {
+            reminderElement.parentElement.remove();
+            let reminders = JSON.parse(localStorage.getItem('reminders')) || [];
+            reminders = reminders.filter(reminder => reminder.taskName !== taskName);
+            localStorage.setItem('reminders', JSON.stringify(reminders));
+            if (reminders.length === 0) {
+                document.getElementById('reminder-list').innerHTML = '<h2>No reminders available</h2>';
+            }
+        }
+
+        function loadReminders() {
+            const reminders = JSON.parse(localStorage.getItem('reminders')) || [];
+            const reminderList = document.getElementById('reminder-list');
+
+            if (reminders.length > 0) {
+                reminderList.innerHTML = '';
+                reminders.forEach(reminder => {
+                    const reminderItem = document.createElement('div');
+                    reminderItem.classList.add('reminder-item');
+                    reminderItem.innerHTML = `
+                        <div class="task-card">
+                            <button class="remove-btn" onclick="removeReminder(this, '${reminder.taskName}')">X</button>
+                            <h3>Task: ${reminder.taskName}</h3>
+                            <p>Due Date: ${reminder.dueDate}</p>
+                            <p>Contact Method: ${reminder.contactMethod}</p>
+                        </div>
+                    `;
+                    reminderList.appendChild(reminderItem);
+                });
+            }
+        }
+
+        loadReminders();
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings Page</title>
+    <link rel="stylesheet" href="stylesettings.css"> 
+</head>
+<body>
+
+    <div class="header">
+        <h1>Settings</h1>
+    </div>
+
+    <div class="settings-container">
+        <button id="change-username">Change Username</button>
+        <button id="change-email">Change Email</button>
+        <button id="change-password">Change Password</button>
+
+        <div class="back-link">
+            <a href="main.html">Back to Taskly Management</a>
+        </div>
+        
+    </div>
+
+    <script>
+        document.getElementById('change-username').addEventListener('click', function(event) {
+            event.preventDefault(); 
+            alert("Username changed.");
+          
+        });
+
+        document.getElementById('change-email').addEventListener('click', function(event) {
+            event.preventDefault(); 
+            alert("Email changed.");
+          
+        });
+
+        document.getElementById('change-password').addEventListener('click', function(event) {
+            event.preventDefault(); 
+            alert("Password changed.");
+           
+        });
+    </script>
+</body>
+</html>

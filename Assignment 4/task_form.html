@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Task</title>
+    <link rel="stylesheet" href="styletask.css">
+</head>
+<body>
+
+    <div class="task-form">
+        <h2>Add New Task</h2>
+        <form onsubmit="submitTask(event)">
+            <label for="task-name">Task Name</label>
+            <input type="text" id="task-name" required>
+
+            <label for="due-date">Due Date</label>
+            <input type="date" id="due-date" required>
+
+            <label for="task-type">Task Type</label>
+            <select id="task-type" required>
+                <option value="Work">Work</option>
+                <option value="Personal">Personal</option>
+                <option value="Other">Other</option>
+            </select>
+
+            <label for="contact-method">Contact Method (Email or Phone)</label>
+            <input type="text" id="contact-method" required>
+            <button type="submit">Add Task</button>
+        </form>
+    </div>
+
+    <script>
+        function submitTask(event) {
+            event.preventDefault();
+
+            const taskName = document.getElementById('task-name').value;
+            const dueDate = document.getElementById('due-date').value;
+            const taskType = document.getElementById('task-type').value;
+            const contactMethod = document.getElementById('contact-method').value;
+            window.location.href = `main.html?taskName=${encodeURIComponent(taskName)}&taskType=${encodeURIComponent(taskType)}&dueDate=${encodeURIComponent(dueDate)}&contactMethod=${encodeURIComponent(contactMethod)}`;
+        }
+    </script>
+
+</body>
+</html>
